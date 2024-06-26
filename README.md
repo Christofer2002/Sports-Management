@@ -22,21 +22,25 @@ This project is a basic application developed in ReactJs that allows sports faci
 ```bash
 git clone https://github.com/your-username/your-repository.git
 cd your-repository
+```
 
 ### Install Dependencies
 ```bash
 npm install
 ``` or `yarn install`
+```
 
 ### Build the Application
 ```bash
 npm run build
 ``` or `yarn build`
+```
 
 ### Run the Application
 ```bash
 npm start
 ``` or `yarn start`
+```
 
 ## Usage
 - Open your browser and navigate to `http://localhost:3000/` to view the application.
