@@ -1,0 +1,96 @@
+/* index.css */
+
+/* Paleta de Colores */
+:root {
+  --primary-color: #E30513;
+  --secondary-color: #000000;
+  --background-color: #f8f9fa;
+  --text-color: #343a40;
+}
+
+/* Tipografía */
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: 'Arial', sans-serif;
+}
+
+/* Estilos Generales */
+.container {
+  margin-top: 20px;
+}
+
+.text-right {
+  text-align: right;
+}
+
+button,
+.btn {
+  background-color: var(--primary-color);
+  border-color: var(--secondary-color);
+  color: #fff;
+}
+
+button:hover,
+.btn:hover {
+  background-color: var(--secondary-color);
+  border-color: #000000;
+}
+
+.form-label {
+  color: var(--text-color);
+}
+
+.form-control {
+  border-color: var(--text-color);
+}
+
+.form-control:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.2rem rgba(227, 5, 19, 0.25);
+}
+
+.modal-header {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+
+.modal-body {
+  background-color: var(--background-color);
+}
+
+/* Estilos específicos para el calendario */
+.calendar-container {
+  background-color: var(--background-color);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.calendar {
+  height: 600px;
+}
+
+.event-search-form {
+  margin-bottom: 20px;
+}
+
+.event-search-form .row {
+  align-items: flex-end;
+}
+
+.event-search-form .btn {
+  margin-top: 24px;
+}
+
+/* Header.css */
+
+.navbar {
+  border-bottom: 1px solid var(--primary-color);
+  margin-bottom: 20px;
+}
+
+.navbar-brand img {
+  max-height: 50px;
+}
+
