@@ -1,0 +1,23 @@
+/* ReservationFormModal.css */
+:root {
+  --primary-color: #E30513;
+  --secondary-color: #bc0915;
+  --background-color: #f8f9fa;
+  --text-color: #343a40;
+}
+
+.modal-header {
+    background-color: var(--primary-color);
+    color: #fff;
+  }
+  
+  .modal-body {
+    background-color: var(--background-color);
+  }
+  
+  .form-control,
+  .react-select-container {
+    margin-bottom: 1rem;
+  }
+  
+  

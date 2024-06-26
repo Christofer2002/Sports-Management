@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 import Select from 'react-select';
-import eventsService from '../../services/eventsService';
-import { ToastContainer, toast } from 'react-toastify';
+import eventsService from '../../../services/eventsService';
 
 const searchOptions = [
   { value: 'name', label: 'Name' },
@@ -32,16 +31,15 @@ const EventSearch = ({ setSearchResults }) => {
       const { searchResults, error } = eventsService.searchEvents(searchParams);
       if (!error) {
         setSearchResults(searchResults);
-        toast.success('Search successful!');
+
       }
     } catch (error) {
-      toast.error('Failed to search events.');
+      
     }
   };
 
   return (
     <>
-      <ToastContainer />
       <Form onSubmit={handleSearchSubmit} className="event-search-form">
         <Row className="align-items-end">
           <Col xs="auto">
@@ -61,7 +59,7 @@ const EventSearch = ({ setSearchResults }) => {
               placeholder={`Enter ${searchCriteria.label}`}
             />
           </Col>
-          <Col xs="auto">
+          <Col col="auto">
             <Button variant="primary" type="submit" className="mt-4">
               Search
             </Button>

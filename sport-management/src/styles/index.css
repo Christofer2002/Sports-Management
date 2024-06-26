@@ -3,7 +3,7 @@
 /* Paleta de Colores */
 :root {
   --primary-color: #E30513;
-  --secondary-color: #000000;
+  --secondary-color: #bc0915;
   --background-color: #f8f9fa;
   --text-color: #343a40;
 }
@@ -27,14 +27,13 @@ body {
 button,
 .btn {
   background-color: var(--primary-color);
-  border-color: var(--secondary-color);
+
   color: #fff;
 }
 
 button:hover,
 .btn:hover {
   background-color: var(--secondary-color);
-  border-color: #000000;
 }
 
 .form-label {

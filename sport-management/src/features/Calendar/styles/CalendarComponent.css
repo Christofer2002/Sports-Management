@@ -1,0 +1,37 @@
+/* CalendarComponent.css */
+.calendar-container {
+  background-color: var(--background-color);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.calendar {
+  height: 600px;
+}
+
+.event-search-form {
+  margin-bottom: 20px;
+}
+
+.event-search-form .row {
+  align-items: flex-end;
+}
+
+.event-search-form .btn {
+  margin-top: 24px;
+}
+
+/* Estilo para cambiar el cursor a pointer y cambiar el color de fondo de las celdas del calendario al pasar el ratón */
+.rbc-month-view .rbc-day-bg:hover,
+.rbc-month-view .rbc-date-cell:hover {
+  cursor: pointer;
+  background-color: #d6dfe8; /* Puedes cambiar este color según tu preferencia */
+}
+
+/* Opcional: también puedes cambiar el color de los eventos */
+.rbc-event {
+  cursor: pointer;
+  background-color: #416893; /* Puedes cambiar este color según tu preferencia */
+  color: #fff;
+}

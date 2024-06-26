@@ -1,26 +1,22 @@
-import useFetch from '../features/Calendar/hooks/useFetch';
-
-const API_URL = '/events';
-
-const fetchEvents = () => {
-  const { data, error, loading, setData } = useFetch(API_URL);
-  return { events: data, error, loading, setEvents: setData };
+const getEvents = () => {
+  const events = JSON.parse(localStorage.getItem('events')) || [];
+  return events.map(event => ({
+    ...event,
+    start: new Date(event.start),
+    end: new Date(event.end)
+  }));
 };
 
 const addEvent = (event) => {
-  const { data, error, loading } = useFetch(`${API_URL}/add`, 'POST', event);
-  return { newEvent: data, error, loading };
-};
-
-const searchEvents = (criteria) => {
-  const { data, error, loading } = useFetch(`${API_URL}/search`, 'GET', criteria);
-  return { searchResults: data, error, loading };
+  const events = getEvents();
+  events.push(event);
+  localStorage.setItem('events', JSON.stringify(events));
+  return { newEvent: event, error: null };
 };
 
 const eventsService = {
-  fetchEvents,
+  getEvents,
   addEvent,
-  searchEvents,
 };
 
 export default eventsService;
