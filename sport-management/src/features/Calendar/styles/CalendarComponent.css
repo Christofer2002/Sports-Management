@@ -4,11 +4,28 @@
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+ /*  position: relative;
+  z-index: 1; */
 }
 
 .calendar {
   height: 600px;
 }
+
+.calendar-box {
+  border: 1px solid #ccc; /* Cambia el color del borde a un gris claro */
+  border-radius: 10px; /* Mantén el borde redondeado */
+  padding: 20px; /* Ajusta el padding */
+  background-color: #f9f9f9; /* Agrega un color de fondo suave */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Agrega una sombra para darle profundidad */
+  transition: all 0.3s ease; /* Suaviza las transiciones */
+}
+
+.calendar-box:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Aumenta la sombra al pasar el cursor para un efecto interactivo */
+  border-color: var(--secondary-color); /* Cambia el color del borde al pasar el cursor */
+}
+
 
 .event-search-form {
   margin-bottom: 20px;
@@ -22,16 +39,17 @@
   margin-top: 24px;
 }
 
-/* Estilo para cambiar el cursor a pointer y cambiar el color de fondo de las celdas del calendario al pasar el ratón */
+/* Opcional: cambia el color de fondo de los días al pasar el mouse sobre ellos
 .rbc-month-view .rbc-day-bg:hover,
 .rbc-month-view .rbc-date-cell:hover {
   cursor: pointer;
-  background-color: #d6dfe8; /* Puedes cambiar este color según tu preferencia */
-}
+  background-color: #d6dfe8; /* Puedes cambiar este color según tu preferencia 
+} */
+ 
 
 /* Opcional: también puedes cambiar el color de los eventos */
 .rbc-event {
   cursor: pointer;
-  background-color: #416893; /* Puedes cambiar este color según tu preferencia */
+  background-color: var(--primary-color) !important; /* Puedes cambiar este color según tu preferencia */
   color: #fff;
 }

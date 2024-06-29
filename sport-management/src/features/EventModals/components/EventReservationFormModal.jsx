@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Store } from 'react-notifications-component';
 import { Modal, Button, Form } from 'react-bootstrap';
-import eventsService from '../../../services/eventsService';
 import Select from 'react-select';
+import eventsService from '../../../services/eventsService';
 import eventTypes from '../../../data/eventTypes';
-import '../styles/ReservationFormModal.css';
+import '@geoapify/geocoder-autocomplete/styles/minimal.css';
+import { GeoapifyGeocoderAutocomplete, GeoapifyContext } from '@geoapify/react-geocoder-autocomplete';
+import '../styles/EventReservationFormModal.css';
 
-const ReservationFormModal = ({ show, handleClose, onSave, initialData }) => {
+const EventReservationFormModal = ({ show, handleClose, onSave, initialData }) => {
   const [formData, setFormData] = useState({
     name: '',
     type: '',
@@ -16,6 +17,8 @@ const ReservationFormModal = ({ show, handleClose, onSave, initialData }) => {
     date: '',
     photos: []
   });
+
+  const [selectedLocation, setSelectedLocation] = useState('');
 
   useEffect(() => {
     if (initialData) {
@@ -28,6 +31,7 @@ const ReservationFormModal = ({ show, handleClose, onSave, initialData }) => {
         date: initialData.date || '',
         photos: initialData.photos || []
       });
+      setSelectedLocation(initialData.location || '');
     } else {
       resetForm();
     }
@@ -43,23 +47,52 @@ const ReservationFormModal = ({ show, handleClose, onSave, initialData }) => {
       date: '',
       photos: []
     });
+    setSelectedLocation('');
   };
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === 'photos') {
-      setFormData({ ...formData, [name]: files });
+      const fileArray = Array.from(files);
+      const fileReaders = fileArray.map(file => {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        });
+      });
+      Promise.all(fileReaders).then((fileDataUrls) => {
+        setFormData({ ...formData, [name]: fileDataUrls });
+      });
     } else {
       setFormData({ ...formData, [name]: value });
     }
   };
 
-  const handleSelectChange = (selectedOption) => {
-    setFormData({ ...formData, type: selectedOption.value });
+  console.log(formData);
+
+  const handleSelectChange = (selectedOption, name) => {
+    setFormData({ ...formData, [name]: selectedOption.value });
+  };
+
+  const handleSelectAddress = (value) => {
+    console.log(value);
+    if (value) {
+      const formattedLocation = value.properties.formatted;
+      setSelectedLocation(formattedLocation);
+      setFormData({ ...formData, location: formattedLocation });
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!formData.location) {
+      alert('Please select a location.');
+      return;
+    }
+
     try {
       const eventStartDate = new Date(formData.date);
       const eventEndDate = new Date(formData.date);
@@ -78,20 +111,19 @@ const ReservationFormModal = ({ show, handleClose, onSave, initialData }) => {
         resetForm();
       }
     } catch (error) {
-      Store.addNotification({
-        title: "Error",
-        message: "Failed to add event.",
-        type: "danger",
-        container: "top-right",
-        animationIn: ["animate__animated", "animate__fadeIn"],
-        animationOut: ["animate__animated", "animate__fadeOut"],
-        dismiss: {
-          duration: 3000,
-          onScreen: true
-        }
-      });
+      // handle error
     }
   };
+
+  const suggestionsFilter = (suggestions) => {
+    console.log(suggestions);
+    return suggestions.map(suggestion => {
+      suggestion.properties.name = suggestion.properties.formatted || suggestion.properties.address_line1 || suggestion.properties.address_line2 || 'Unnamed place';
+      return suggestion;
+    });
+  };
+
+  console.log(selectedLocation);
 
   return (
     <Modal show={show} onHide={() => { handleClose(); resetForm(); }} centered backdrop="static">
@@ -115,7 +147,7 @@ const ReservationFormModal = ({ show, handleClose, onSave, initialData }) => {
             <Form.Label>Type</Form.Label>
             <Select
               value={eventTypes.find(option => option.value === formData.type)}
-              onChange={handleSelectChange}
+              onChange={(option) => handleSelectChange(option, 'type')}
               options={eventTypes}
               placeholder="Select event type"
               required
@@ -124,12 +156,23 @@ const ReservationFormModal = ({ show, handleClose, onSave, initialData }) => {
 
           <Form.Group controlId="formLocation">
             <Form.Label>Location</Form.Label>
+            <GeoapifyContext apiKey="8cc6fb5377d343ca8f5bdc678be49034">
+              <GeoapifyGeocoderAutocomplete
+                placeholder="Enter address here"
+                filterByCountryCode={['CR']}
+                biasByLocation={{ lat: 9.748917, lon: -83.753428 }}
+                postprocessHook={handleSelectAddress}
+                suggestionsFilter={suggestionsFilter}
+                value={selectedLocation}
+              />
+            </GeoapifyContext>
             <Form.Control
               type="text"
               name="location"
-              value={formData.location}
+              value={selectedLocation}
               onChange={handleChange}
               required
+              hidden
             />
           </Form.Group>
 
@@ -175,11 +218,12 @@ const ReservationFormModal = ({ show, handleClose, onSave, initialData }) => {
               onChange={handleChange}
               multiple
               accept="image/*"
+              required
             />
           </Form.Group>
 
           <Button variant="primary" type="submit">
-            Submit
+            {initialData ? 'Edit Event' : 'Create New Sports Event'}
           </Button>
         </Form>
       </Modal.Body>
@@ -187,4 +231,4 @@ const ReservationFormModal = ({ show, handleClose, onSave, initialData }) => {
   );
 };
 
-export default ReservationFormModal;
+export default EventReservationFormModal;

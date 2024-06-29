@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
-const EventDetailModal = ({ show, handleClose, event, handleEdit }) => {
+const EventDetailModal = ({ show, handleClose, event, handleEdit, handleDelete }) => {
   if (!event) return null;
   return (
     <Modal show={show} onHide={handleClose} centered backdrop="static">
@@ -19,8 +19,8 @@ const EventDetailModal = ({ show, handleClose, event, handleEdit }) => {
           <div>
             <strong>Photos:</strong>
             <ul>
-              {Array.from(event.photos).map((photo, index) => (
-                <li key={index}>{photo.name}</li>
+              {event.photos.map((photo, index) => (
+                <li key={index}><img src={photo} alt={`Event ${index}`} style={{ maxWidth: '100%' }} /></li>
               ))}
             </ul>
           </div>
@@ -29,6 +29,7 @@ const EventDetailModal = ({ show, handleClose, event, handleEdit }) => {
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>Close</Button>
         <Button variant="primary" onClick={handleEdit}>Edit</Button>
+        <Button variant="danger" onClick={handleDelete}>Delete</Button>
       </Modal.Footer>
     </Modal>
   );

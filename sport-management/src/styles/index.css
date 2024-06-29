@@ -1,11 +1,18 @@
-/* index.css */
-
 /* Paleta de Colores */
 :root {
-  --primary-color: #E30513;
+  --primary-color: #d40816;
   --secondary-color: #bc0915;
   --background-color: #f8f9fa;
   --text-color: #343a40;
+}
+
+html{
+  box-sizing: border-box;
+  font-size: 62.5% !important; /*1 rem == 10px*/
+}
+
+*, *::before, *::after{
+  box-sizing: inherit;
 }
 
 /* Tipografía */
@@ -27,7 +34,6 @@ body {
 button,
 .btn {
   background-color: var(--primary-color);
-
   color: #fff;
 }
 

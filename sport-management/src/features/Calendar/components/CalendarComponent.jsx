@@ -3,15 +3,14 @@ import { ReactNotifications, Store } from 'react-notifications-component';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
-import EventSearch from '../../EventSearch/components/EventSearch';
-import ReservationFormModal from '../../Reservation/components/ReservationFormModal';
-import EventDetailModal from '../../Reservation/components/EventDetailModal';
+import EventSearch from '../../EventTools/components/EventSearch';
+import { EventDetailModal, EventReservationFormModal } from '../../EventModals/components/';
+import EventItem from './EventItem';
 import eventsService from '../../../services/eventsService';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import '../styles/CalendarComponent.css';
 import 'react-notifications-component/dist/theme.css';
 import 'animate.css';
-
 
 const localizer = momentLocalizer(moment);
 
@@ -26,11 +25,6 @@ const CalendarComponent = () => {
     const storedEvents = eventsService.getEvents();
     setEvents(storedEvents);
   }, []);
-
-  const handleSelectSlot = ({ start }) => {
-    setSelectedEvent({ date: moment(start).format('YYYY-MM-DD') });
-    setShowEditModal(true);
-  };
 
   const handleSelectEvent = (event) => {
     setSelectedEvent(event);
@@ -68,6 +62,25 @@ const CalendarComponent = () => {
     });
   };
 
+  const handleDeleteEvent = (event) => {
+    eventsService.deleteEvent(event);
+    const updatedEvents = events.filter(e => e.id !== event.id);
+    setEvents(updatedEvents);
+    Store.addNotification({
+      title: "Deleted",
+      message: "Event deleted successfully!",
+      type: "danger",
+      container: "top-right",
+      animationIn: ["animate__animated", "animate__fadeIn"],
+      animationOut: ["animate__animated", "animate__fadeOut"],
+      dismiss: {
+        duration: 3000,
+        onScreen: true
+      }
+    });
+    setShowDetailModal(false);
+  };
+
   return (
     <Container fluid className="mt-4 calendar-container">
       <ReactNotifications />
@@ -81,38 +94,53 @@ const CalendarComponent = () => {
           <EventSearch setSearchResults={setSearchResults} />
         </Col>
       </Row>
-      <Row>
-        <Col>
-          <Calendar
-            localizer={localizer}
-            events={searchResults.length ? searchResults : events}
-            startAccessor="start"
-            endAccessor="end"
-            titleAccessor="name"
-            selectable
-            onSelectSlot={handleSelectSlot}
-            onSelectEvent={handleSelectEvent}
-            style={{ height: 600 }}
-            className="calendar"
-          />
-        </Col>
-      </Row>
-      {selectedEvent && (
-        <EventDetailModal
-          show={showDetailModal}
-          handleClose={handleCloseDetail}
-          event={selectedEvent}
-          handleEdit={() => {
-            setShowDetailModal(false);
-            setShowEditModal(true);
-          }}
-        />
-      )}
-      <ReservationFormModal
+      <div className='calendar-box'>
+        <Row>
+          <Col>
+            <Calendar
+              localizer={localizer}
+              events={searchResults.length ? searchResults : events}
+              startAccessor="start"
+              endAccessor="end"
+              titleAccessor="name"
+              selectable
+              style={{ height: 600 }}
+              components={{
+                event: (props) => (
+                  <EventItem
+                    event={props.event}
+                    onView={(event) => {
+                      setSelectedEvent(event);
+                      setShowDetailModal(true);
+                    }}
+                    onEdit={(event) => {
+                      setSelectedEvent(event);
+                      setShowEditModal(true);
+                    }}
+                    onDelete={handleDeleteEvent}
+                  />
+                )
+              }}
+              className="calendar"
+            />
+          </Col>
+        </Row>
+      </div>
+      <EventReservationFormModal
         show={showEditModal}
         handleClose={handleCloseEdit}
         onSave={handleSave}
         initialData={selectedEvent}
+      />
+      <EventDetailModal
+        show={showDetailModal}
+        handleClose={handleCloseDetail}
+        event={selectedEvent}
+        handleEdit={() => {
+          setShowDetailModal(false);
+          setShowEditModal(true);
+        }}
+        handleDelete={() => handleDeleteEvent(selectedEvent)}
       />
     </Container>
   );

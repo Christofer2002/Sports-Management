@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid';
+
 const getEvents = () => {
   const events = JSON.parse(localStorage.getItem('events')) || [];
   return events.map(event => ({
@@ -9,14 +11,23 @@ const getEvents = () => {
 
 const addEvent = (event) => {
   const events = getEvents();
-  events.push(event);
+  const newEvent = { ...event, id: uuidv4() };
+  events.push(newEvent);
   localStorage.setItem('events', JSON.stringify(events));
-  return { newEvent: event, error: null };
+  return { newEvent, error: null };
+};
+
+const deleteEvent = (event) => {
+  const events = getEvents();
+  const newEvents = events.filter(e => e.id !== event.id);
+  localStorage.setItem('events', JSON.stringify(newEvents));
+  return { error: null };
 };
 
 const eventsService = {
   getEvents,
   addEvent,
+  deleteEvent
 };
 
 export default eventsService;
