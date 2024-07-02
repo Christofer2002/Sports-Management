@@ -6,12 +6,12 @@
   --text-color: #343a40;
 }
 
-html{
+html {
   box-sizing: border-box;
   font-size: 62.5% !important; /*1 rem == 10px*/
 }
 
-*, *::before, *::after{
+*, *::before, *::after {
   box-sizing: inherit;
 }
 
@@ -35,11 +35,33 @@ button,
 .btn {
   background-color: var(--primary-color);
   color: #fff;
+  border: none; /* Eliminar el borde */
+  box-shadow: none; /* Eliminar la sombra */
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 button:hover,
 .btn:hover {
   background-color: var(--secondary-color);
+  transform: scale(1.05); /* Efecto de agrandamiento al pasar el ratón */
+}
+
+button:focus,
+.btn:focus {
+  outline: none; /* Eliminar el contorno azul al enfocar */
+  box-shadow: none; /* Eliminar la sombra */
+}
+
+button:active,
+.btn:active {
+  background-color: var(--secondary-color);
+  transform: scale(1.1); /* Efecto de agrandamiento al hacer clic */
+}
+
+button:disabled,
+.btn:disabled {
+  background-color: #ccc; /* Color gris para botones deshabilitados */
+  color: #666;
 }
 
 .form-label {
@@ -53,6 +75,47 @@ button:hover,
 .form-control:focus {
   border-color: var(--primary-color);
   box-shadow: 0 0 0 0.2rem rgba(227, 5, 19, 0.25);
+}
+
+/* Estilos para selectores estándar */
+select.form-control {
+  border-color: var(--primary-color);
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+select.form-control:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.2rem rgba(227, 5, 19, 0.25);
+}
+
+/* Estilos para react-select */
+.css-2b097c-container {
+  .react-select__control {
+    border-color: var(--primary-color);
+    background-color: var(--background-color);
+    color: var(--text-color);
+  }
+
+  .react-select__control--is-focused {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(227, 5, 19, 0.25);
+  }
+
+  .react-select__menu {
+    background-color: var(--background-color);
+    color: var(--text-color);
+  }
+
+  .react-select__option--is-focused {
+    background-color: var(--primary-color);
+    color: #fff;
+  }
+
+  .react-select__option--is-selected {
+    background-color: var(--secondary-color);
+    color: #fff;
+  }
 }
 
 .modal-header {
@@ -88,14 +151,46 @@ button:hover,
   margin-top: 24px;
 }
 
-/* Header.css */
-
-.navbar {
-  border-bottom: 1px solid var(--primary-color);
-  margin-bottom: 20px;
+/* Estilos para reducir la altura de react-select */
+.react-select__control {
+  min-height: 25px !important; /* Ajusta la altura mínima */
+  height: 25px; /* Ajusta la altura */
+  font-size: 0.9rem; /* Ajusta el tamaño de la fuente */
+  border-color: var(--primary-color) !important; /* Aplica el color primario al borde */
+  box-shadow: none !important; /* Elimina la sombra azul al enfocar */
 }
 
-.navbar-brand img {
-  max-height: 50px;
+.react-select__value-container {
+  padding: 2px 8px; /* Ajusta el padding interno */
+}
+
+.react-select__single-value {
+  font-size: 0.9rem; /* Ajusta el tamaño de la fuente */
+}
+
+.react-select__indicator {
+  padding: 0 4px; /* Ajusta el padding de los indicadores (flecha desplegable) */
+}
+
+/* Estilos para aplicar el color primario a cada opción */
+.react-select__option {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.react-select__option--is-focused {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+
+.react-select__option--is-selected {
+  background-color: var(--secondary-color);
+  color: #fff;
+}
+
+/* Elimina el borde azul al enfocar */
+.react-select__control--is-focused {
+  border-color: var(--primary-color) !important; /* Aplica el color primario al borde */
+  box-shadow: 0 0 0 1px var(--primary-color) !important; /* Ajusta la sombra del borde */
 }
 

@@ -24,10 +24,34 @@ const deleteEvent = (event) => {
   return { error: null };
 };
 
+const editEvent = (event) => {
+  const events = getEvents();
+  const updatedEvents = events.map(e => {
+    if (e.id === event.id) {
+      return event;
+    }
+    return e;
+  });
+  localStorage.setItem('events', JSON.stringify(updatedEvents));
+  return { error: null };
+};
+
+const searchEvents = (searchParams) => {
+  const events = getEvents();
+  const searchResults = events.filter(event => {
+    return Object.keys(searchParams).every(key => {
+      return event[key].toString().toLowerCase().includes(searchParams[key].toLowerCase());
+    });
+  });
+  return { searchResults, error: null };
+};
+
 const eventsService = {
   getEvents,
   addEvent,
-  deleteEvent
+  deleteEvent,
+  editEvent,
+  searchEvents
 };
 
 export default eventsService;

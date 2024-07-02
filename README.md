@@ -5,11 +5,13 @@ This project is a basic application developed in ReactJs that allows sports faci
 
 ## Features
 - **Management Calendar**: Interface to view, add, modify, and delete bookings.
-- **Sports Facility Creation**: Form to add new sports facilities with data validation and image upload.
+- **Sports Facility Creation**: Form to add new sports facilities with data validation and images upload.
 
 ## Technologies Used
 - ReactJs
-- Material-UI or Bootstrap
+- Bootstrap
+- FontAwesome
+- Tooltip
 - react-big-calendar (for calendar management)
 
 ## Prerequisites
@@ -30,16 +32,10 @@ npm install
 ``` or `yarn install`
 ```
 
-### Build the Application
+### Run the Application as Development
 ```bash
-npm run build
-``` or `yarn build`
-```
-
-### Run the Application
-```bash
-npm start
-``` or `yarn start`
+npm npm run dev
+``` or `yarn dev`
 ```
 
 ## Usage

@@ -3,12 +3,11 @@ import { Modal, Button, Form } from 'react-bootstrap';
 import Select from 'react-select';
 import eventsService from '../../../services/eventsService';
 import eventTypes from '../../../data/eventTypes';
-import '@geoapify/geocoder-autocomplete/styles/minimal.css';
-import { GeoapifyGeocoderAutocomplete, GeoapifyContext } from '@geoapify/react-geocoder-autocomplete';
 import '../styles/EventReservationFormModal.css';
 
 const EventReservationFormModal = ({ show, handleClose, onSave, initialData }) => {
   const [formData, setFormData] = useState({
+    id: '',
     name: '',
     type: '',
     location: '',
@@ -18,11 +17,10 @@ const EventReservationFormModal = ({ show, handleClose, onSave, initialData }) =
     photos: []
   });
 
-  const [selectedLocation, setSelectedLocation] = useState('');
-
   useEffect(() => {
     if (initialData) {
       setFormData({
+        id: initialData.id || '',
         name: initialData.name || '',
         type: initialData.type || '',
         location: initialData.location || '',
@@ -31,7 +29,6 @@ const EventReservationFormModal = ({ show, handleClose, onSave, initialData }) =
         date: initialData.date || '',
         photos: initialData.photos || []
       });
-      setSelectedLocation(initialData.location || '');
     } else {
       resetForm();
     }
@@ -39,6 +36,7 @@ const EventReservationFormModal = ({ show, handleClose, onSave, initialData }) =
 
   const resetForm = () => {
     setFormData({
+      id: '',
       name: '',
       type: '',
       location: '',
@@ -47,7 +45,6 @@ const EventReservationFormModal = ({ show, handleClose, onSave, initialData }) =
       date: '',
       photos: []
     });
-    setSelectedLocation('');
   };
 
   const handleChange = (e) => {
@@ -63,29 +60,18 @@ const EventReservationFormModal = ({ show, handleClose, onSave, initialData }) =
         });
       });
       Promise.all(fileReaders).then((fileDataUrls) => {
-        setFormData({ ...formData, [name]: fileDataUrls });
+        setFormData({ ...formData, photos: [...formData.photos, ...fileDataUrls] });
       });
     } else {
       setFormData({ ...formData, [name]: value });
     }
   };
 
-  console.log(formData);
-
   const handleSelectChange = (selectedOption, name) => {
     setFormData({ ...formData, [name]: selectedOption.value });
   };
 
-  const handleSelectAddress = (value) => {
-    console.log(value);
-    if (value) {
-      const formattedLocation = value.properties.formatted;
-      setSelectedLocation(formattedLocation);
-      setFormData({ ...formData, location: formattedLocation });
-    }
-  };
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     if (!formData.location) {
@@ -104,31 +90,25 @@ const EventReservationFormModal = ({ show, handleClose, onSave, initialData }) =
         end: eventEndDate
       };
 
-      const { newEvent: savedEvent, error } = await eventsService.addEvent(newEvent);
-      if (!error) {
-        onSave(savedEvent);
-        handleClose();
-        resetForm();
+      // Check if it's an edit or new event
+      if (formData.id) {
+        eventsService.editEvent(newEvent);
+      } else {
+        eventsService.addEvent(newEvent);
       }
+
+      onSave(newEvent);
+      handleClose();
+      resetForm();
     } catch (error) {
       // handle error
     }
   };
 
-  const suggestionsFilter = (suggestions) => {
-    console.log(suggestions);
-    return suggestions.map(suggestion => {
-      suggestion.properties.name = suggestion.properties.formatted || suggestion.properties.address_line1 || suggestion.properties.address_line2 || 'Unnamed place';
-      return suggestion;
-    });
-  };
-
-  console.log(selectedLocation);
-
   return (
     <Modal show={show} onHide={() => { handleClose(); resetForm(); }} centered backdrop="static">
       <Modal.Header closeButton>
-        <Modal.Title>{initialData ? 'Edit Event' : 'Create New Sports Event'}</Modal.Title>
+        <Modal.Title>{formData.id ? 'Edit Event' : 'Create New Sports Event'}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={handleSubmit}>
@@ -156,23 +136,12 @@ const EventReservationFormModal = ({ show, handleClose, onSave, initialData }) =
 
           <Form.Group controlId="formLocation">
             <Form.Label>Location</Form.Label>
-            <GeoapifyContext apiKey="8cc6fb5377d343ca8f5bdc678be49034">
-              <GeoapifyGeocoderAutocomplete
-                placeholder="Enter address here"
-                filterByCountryCode={['CR']}
-                biasByLocation={{ lat: 9.748917, lon: -83.753428 }}
-                postprocessHook={handleSelectAddress}
-                suggestionsFilter={suggestionsFilter}
-                value={selectedLocation}
-              />
-            </GeoapifyContext>
             <Form.Control
               type="text"
               name="location"
-              value={selectedLocation}
+              value={formData.location}
               onChange={handleChange}
               required
-              hidden
             />
           </Form.Group>
 
@@ -212,18 +181,28 @@ const EventReservationFormModal = ({ show, handleClose, onSave, initialData }) =
 
           <Form.Group controlId="formPhotos">
             <Form.Label>Photos</Form.Label>
+            <div className="existing-photos">
+              {formData.photos && formData.photos.length > 0 && (
+                <div className="photo-grid">
+                  {formData.photos.map((photo, index) => (
+                    <div key={index} className="photo-item">
+                      <img src={photo} alt={`Event ${index}`} className="photo-thumbnail" />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
             <Form.Control
               type="file"
               name="photos"
               onChange={handleChange}
               multiple
               accept="image/*"
-              required
             />
           </Form.Group>
 
           <Button variant="primary" type="submit">
-            {initialData ? 'Edit Event' : 'Create New Sports Event'}
+            {formData.id ? 'Edit Event' : 'Create New Sports Event'}
           </Button>
         </Form>
       </Modal.Body>

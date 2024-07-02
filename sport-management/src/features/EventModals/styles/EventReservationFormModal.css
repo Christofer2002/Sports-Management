@@ -1,23 +1,29 @@
-/* ReservationFormModal.css */
-:root {
-  --primary-color: #E30513;
-  --secondary-color: #bc0915;
-  --background-color: #f8f9fa;
-  --text-color: #343a40;
+.existing-photos {
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
-.modal-header {
-    background-color: var(--primary-color);
-    color: #fff;
-  }
-  
-  .modal-body {
-    background-color: var(--background-color);
-  }
-  
-  .form-control,
-  .react-select-container {
-    margin-bottom: 1rem;
-  }
-  
-  
+.photo-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.photo-item {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.photo-item:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.photo-thumbnail {
+  display: block;
+  width: 100%;
+  height: auto;
+}
