@@ -22,6 +22,7 @@ const EventSearch = ({ setSearchResults, refreshList }) => {
 
   const handleSearchCriteriaChange = (selectedOption) => {
     setSearchCriteria(selectedOption);
+    setSearchValue(''); // Reset search value when criteria changes
   };
 
   const handleSearchValueChange = (e) => {
@@ -67,7 +68,7 @@ const EventSearch = ({ setSearchResults, refreshList }) => {
           <Form.Label>Search</Form.Label>
           <div className="input-with-clear">
             <Form.Control
-              type="text"
+              type={searchCriteria.value === 'date' ? 'date' : 'text'}
               value={searchValue}
               onChange={handleSearchValueChange}
               placeholder={`Enter ${searchCriteria.label}`}

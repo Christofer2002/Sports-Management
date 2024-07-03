@@ -43,6 +43,10 @@ const searchEvents = (searchParams) => {
   const events = getEvents();
   const searchResults = events.filter(event => {
     return Object.keys(searchParams).every(key => {
+      if (key === 'date') {
+        const eventDate = new Date(event[key]).toISOString().split('T')[0]; // Format date to YYYY-MM-DD
+        return eventDate.includes(searchParams[key]);
+      }
       return event[key].toString().toLowerCase().includes(searchParams[key].toLowerCase());
     });
   });

@@ -29,13 +29,19 @@ cd your-repository
 ### Install Dependencies
 ```bash
 npm install
-``` or `yarn install`
+``` 
+or 
+```bash
+yarn install
 ```
 
 ### Run the Application as Development
 ```bash
 npm npm run dev
-``` or `yarn dev`
+``` 
+or
+```bash
+yarn dev
 ```
 
 ## Usage
