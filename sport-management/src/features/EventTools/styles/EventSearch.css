@@ -1,9 +1,26 @@
+.event-search-row {
+  display: flex;
+  align-items: flex-end !important;
+  gap: 20px;
+}
+
+.event-search-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-flex {
+  flex: 1;
+}
+
 .input-with-clear {
+  display: flex;
+  max-width: auto;
   position: relative;
 }
 
 .input-with-clear .form-control {
-  padding-right: 30px;
+  flex: 1;
 }
 
 .clear-icon {
@@ -17,4 +34,41 @@
 
 .clear-icon:hover {
   color: #000;
+}
+
+.btn-search {
+  background-color: var(--primary-color) !important;
+}
+
+.btn-search:hover {
+  background-color: var(--secondary-color) !important;
+}
+
+.event-search-buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.event-search-container {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-end;
+  width: 100%;
+}
+
+.event-search-form {
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 2;
+}
+
+.event-search-form .input-with-clear {
+  display: flex;
+  align-items: flex-end !important;
+}
+
+.event-search-form .btn {
+  margin-top: 30px;
 }

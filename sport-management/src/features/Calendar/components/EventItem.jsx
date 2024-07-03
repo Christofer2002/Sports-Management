@@ -28,7 +28,7 @@ const EventItem = ({ event, onView, onEdit, onDelete, view }) => {
             <Dropdown.Item className='dropdown-item-option' onClick={() => onEdit(event)} disabled={isPastEvent}>
               <FontAwesomeIcon icon={faEdit} className="me-2" /> Edit Event
             </Dropdown.Item>
-            <Dropdown.Item className='dropdown-item-option' onClick={() => onDelete(event)} disabled={isPastEvent}>
+            <Dropdown.Item className='dropdown-item-option' onClick={() => onDelete(event.id)} disabled={isPastEvent}>
               <FontAwesomeIcon icon={faTrash} className="me-2" /> Delete Event
             </Dropdown.Item>
           </Dropdown.Menu>

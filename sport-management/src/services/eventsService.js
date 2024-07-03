@@ -11,15 +11,17 @@ const getEvents = () => {
 
 const addEvent = (event) => {
   const events = getEvents();
+  console.log('events:', events);
   const newEvent = { ...event, id: uuidv4() };
+  console.log('event:', newEvent);
   events.push(newEvent);
   localStorage.setItem('events', JSON.stringify(events));
   return { newEvent, error: null };
 };
 
-const deleteEvent = (event) => {
+const deleteEvent = (id) => {
   const events = getEvents();
-  const newEvents = events.filter(e => e.id !== event.id);
+  const newEvents = events.filter(e => e.id !== id);
   localStorage.setItem('events', JSON.stringify(newEvents));
   return { error: null };
 };
@@ -28,10 +30,11 @@ const editEvent = (event) => {
   const events = getEvents();
   const updatedEvents = events.map(e => {
     if (e.id === event.id) {
-      return event;
+      return { ...event, start: new Date(event.date), end: new Date(event.date) };
     }
     return e;
   });
+  updatedEvents.forEach(e => e.end.setHours(e.end.getHours() + 2)); // Assuming events last for 2 hours
   localStorage.setItem('events', JSON.stringify(updatedEvents));
   return { error: null };
 };

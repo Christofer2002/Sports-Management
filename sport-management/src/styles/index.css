@@ -20,6 +20,7 @@ body {
   background-color: var(--background-color);
   color: var(--text-color);
   font-family: 'Arial', sans-serif;
+  font-size: 1.3rem;
 }
 
 /* Estilos Generales */
@@ -38,6 +39,7 @@ button,
   border: none; /* Eliminar el borde */
   box-shadow: none; /* Eliminar la sombra */
   transition: background-color 0.3s ease, transform 0.3s ease;
+  font-size: 1rem;
 }
 
 button:hover,
@@ -131,7 +133,7 @@ select.form-control:focus {
 .calendar-container {
   background-color: var(--background-color);
   padding: 20px;
-  border-radius: 10px;
+  border-radius: 10px;  
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -139,53 +141,24 @@ select.form-control:focus {
   height: 600px;
 }
 
-.event-search-form {
-  margin-bottom: 20px;
-}
-
 .event-search-form .row {
   align-items: flex-end;
 }
 
-.event-search-form .btn {
-  margin-top: 24px;
-}
-
-/* Estilos para reducir la altura de react-select */
-.react-select__control {
-  min-height: 25px !important; /* Ajusta la altura mínima */
-  height: 25px; /* Ajusta la altura */
-  font-size: 0.9rem; /* Ajusta el tamaño de la fuente */
-  border-color: var(--primary-color) !important; /* Aplica el color primario al borde */
-  box-shadow: none !important; /* Elimina la sombra azul al enfocar */
-}
-
-.react-select__value-container {
-  padding: 2px 8px; /* Ajusta el padding interno */
-}
-
-.react-select__single-value {
-  font-size: 0.9rem; /* Ajusta el tamaño de la fuente */
-}
-
-.react-select__indicator {
-  padding: 0 4px; /* Ajusta el padding de los indicadores (flecha desplegable) */
-}
-
 /* Estilos para aplicar el color primario a cada opción */
 .react-select__option {
-  background-color: var(--background-color);
-  color: var(--text-color);
+  background-color: var(--background-color) !important;
+  color: var(--text-color) !important;
 }
 
 .react-select__option--is-focused {
-  background-color: var(--primary-color);
-  color: #fff;
+  background-color: var(--primary-color) !important;
+  color: #fff !important;
 }
 
 .react-select__option--is-selected {
-  background-color: var(--secondary-color);
-  color: #fff;
+  background-color: var(--secondary-color) !important;
+  color: #fff !important;
 }
 
 /* Elimina el borde azul al enfocar */

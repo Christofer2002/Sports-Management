@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Form, Button, Row, Col } from 'react-bootstrap';
+import { Form, Button } from 'react-bootstrap';
 import Select from 'react-select';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import RefreshButton from '../../../components/RefreshButton';
-import eventsService from '../../../services/eventsService';
+import { eventsService, notificationService } from '../../../services/';
 import '../styles/EventSearch.css';
 
 const searchOptions = [
@@ -34,34 +34,36 @@ const EventSearch = ({ setSearchResults, refreshList }) => {
     refreshList();
   };
 
-  const handleSearchSubmit = async (e) => {
+  const handleSearchSubmit = (e) => {
     e.preventDefault();
     try {
       const searchParams = {
         [searchCriteria.value]: searchValue
       };
-      const { searchResults, error } = await eventsService.searchEvents(searchParams);
+      const { searchResults, error } = eventsService.searchEvents(searchParams);
       if (!error) {
         setSearchResults(searchResults);
+        notificationService.success('Search results fetched successfully');
       }
     } catch (error) {
-      console.error('Error fetching search results:', error);
+      notificationService.error('Error fetching search results:', error);
     }
   };
 
   return (
     <Form onSubmit={handleSearchSubmit} className="event-search-form">
-      <Row className="align-items-center">
-        <Col xs="auto">
+      <div className="event-search-row">
+        <div className="event-search-col">
           <Form.Label>Search By</Form.Label>
           <Select
             value={searchCriteria}
             onChange={handleSearchCriteriaChange}
             options={searchOptions}
             classNamePrefix="react-select"
+            isSearchable={false}
           />
-        </Col>
-        <Col>
+        </div>
+        <div className="event-search-col input-flex">
           <Form.Label>Search</Form.Label>
           <div className="input-with-clear">
             <Form.Control
@@ -78,14 +80,14 @@ const EventSearch = ({ setSearchResults, refreshList }) => {
               />
             )}
           </div>
-        </Col>
-        <Col xs="auto" className='d-flex gap-3'>
-          <Button variant="primary" type="submit" className="ml-2">
+        </div>
+        <div className="event-search-col event-search-buttons">
+          <Button type="submit" className="ml-2 btn-search">
             Search
           </Button>
           <RefreshButton refreshList={refreshList} />
-        </Col>
-      </Row>
+        </div>
+      </div>
     </Form>
   );
 };

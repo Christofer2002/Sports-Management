@@ -6,7 +6,7 @@ export const NOTIFICATION_TYPES = {
   };
   
   export const NOTIFICATION_SETTINGS = {
-    container: "top-right",
+    container: "bottom-right",
     animationIn: ["animate__animated", "animate__fadeIn"],
     animationOut: ["animate__animated", "animate__fadeOut"],
     dismiss: {

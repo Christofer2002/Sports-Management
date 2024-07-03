@@ -1,8 +1,9 @@
-.toolbar {
+.event-search-container {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  justify-content: space-between;
+  width: 100%;
+  gap: 20px;
 }
 
 .calendar-container {
@@ -15,7 +16,7 @@
 
 .calendar {
   height: 600px;
-  position: relative; /* Necesario para que z-index funcione */
+  position: relative;
   z-index: 1;
 }
 
@@ -35,23 +36,11 @@
   border-color: var(--secondary-color);
 }
 
-.event-search-form {
-  margin-bottom: 20px;
-  position: relative;
-  z-index: 2;
-}
-
-.event-search-form .row {
-  align-items: flex-end;
-}
-
-.event-search-form .btn {
-  margin-top: 24px;
-}
-
-.create-event-btn {
-  position: relative;
-  z-index: 2; /* Mayor valor de z-index para estar encima del calendario */
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
 }
 
 .rbc-event {
@@ -69,7 +58,7 @@
   position: absolute;
   background-color: var(--primary-color);
   color: #fff;
-  padding: 2px 5px;
-  border-radius: 0 0 0 5px;
+  padding: 1px 5px;
+  border-radius: 0 0 5px 0;
   font-size: 0.8rem;
 }

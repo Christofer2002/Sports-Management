@@ -89,19 +89,12 @@ const EventReservationFormModal = ({ show, handleClose, onSave, initialData }) =
         start: eventStartDate,
         end: eventEndDate
       };
-
-      // Check if it's an edit or new event
-      if (formData.id) {
-        eventsService.editEvent(newEvent);
-      } else {
-        eventsService.addEvent(newEvent);
-      }
-
+      
       onSave(newEvent);
       handleClose();
       resetForm();
     } catch (error) {
-      // handle error
+      console.error('Error handling event:', error);
     }
   };
 
@@ -112,7 +105,7 @@ const EventReservationFormModal = ({ show, handleClose, onSave, initialData }) =
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={handleSubmit}>
-          <Form.Group controlId="formName">
+          <Form.Group controlId="formName" className="form-name">
             <Form.Label>Name</Form.Label>
             <Form.Control
               type="text"
@@ -123,18 +116,20 @@ const EventReservationFormModal = ({ show, handleClose, onSave, initialData }) =
             />
           </Form.Group>
 
-          <Form.Group controlId="formType">
+          <Form.Group controlId="formType" className="form-type">
             <Form.Label>Type</Form.Label>
             <Select
+              classNamePrefix="react-select"
               value={eventTypes.find(option => option.value === formData.type)}
               onChange={(option) => handleSelectChange(option, 'type')}
               options={eventTypes}
               placeholder="Select event type"
               required
+              isSearchable={false}
             />
           </Form.Group>
 
-          <Form.Group controlId="formLocation">
+          <Form.Group controlId="formLocation" className="form-location">
             <Form.Label>Location</Form.Label>
             <Form.Control
               type="text"
@@ -145,7 +140,7 @@ const EventReservationFormModal = ({ show, handleClose, onSave, initialData }) =
             />
           </Form.Group>
 
-          <Form.Group controlId="formCapacity">
+          <Form.Group controlId="formCapacity" className="form-capacity">
             <Form.Label>Capacity</Form.Label>
             <Form.Control
               type="number"
@@ -156,7 +151,7 @@ const EventReservationFormModal = ({ show, handleClose, onSave, initialData }) =
             />
           </Form.Group>
 
-          <Form.Group controlId="formDescription">
+          <Form.Group controlId="formDescription" className="form-description">
             <Form.Label>Description</Form.Label>
             <Form.Control
               as="textarea"
@@ -168,7 +163,7 @@ const EventReservationFormModal = ({ show, handleClose, onSave, initialData }) =
             />
           </Form.Group>
 
-          <Form.Group controlId="formDate">
+          <Form.Group controlId="formDate" className="form-date">
             <Form.Label>Date</Form.Label>
             <Form.Control
               type="date"
@@ -179,7 +174,7 @@ const EventReservationFormModal = ({ show, handleClose, onSave, initialData }) =
             />
           </Form.Group>
 
-          <Form.Group controlId="formPhotos">
+          <Form.Group controlId="formPhotos" className="form-photos">
             <Form.Label>Photos</Form.Label>
             <div className="existing-photos">
               {formData.photos && formData.photos.length > 0 && (

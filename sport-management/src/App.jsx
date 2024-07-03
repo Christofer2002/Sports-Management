@@ -3,7 +3,7 @@ import 'normalize.css';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import './styles/index.css';
-import CalendarComponent from './features/Calendar/components/CalendarComponent';
+import { CalendarComponent } from './features/Calendar/components/';
 
 function App() {
 

@@ -1,17 +1,53 @@
-import React from 'react';
-import { Button } from 'react-bootstrap';
+import React, { useState } from 'react';
+import { Button, Form } from 'react-bootstrap';
+import EventReservationFormModal from '../../EventModals/components/EventReservationFormModal';
+import { notificationService, eventsService } from '../../../services';
+import '../styles/EventAdd.css';
 
-const EventAdd = ({ handleShowEdit }) => {
+const EventAdd = ({ fetchEvents }) => {
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState(null);
 
-  const handleShow = () => {
-    handleShowEdit();
-  }
+  const handleShowEdit = () => {
+    setSelectedEvent(null);
+    setShowEditModal(true);
+  };
+
+  const handleCloseEdit = () => {
+    setShowEditModal(false);
+    setSelectedEvent(null);
+  };
+
+  const handleSave = (event) => {
+    try {
+      if (!event.id) { // Solo agregar si no hay un id (nuevo evento)
+        eventsService.addEvent(event);
+      }
+      fetchEvents(); // Actualiza la lista de eventos
+      notificationService.success("Event added successfully!");
+      setShowEditModal(false);
+    } catch (error) {
+      console.error('Error adding event:', error);
+      notificationService.error("Failed to add event.");
+    }
+  };
 
   return (
-    <Button variant="primary" onClick={handleShow} className="create-event-btn">
-      New Sports Event
-    </Button>
+    <>
+      <div className='event-add'>
+        <Form.Label>Create Event</Form.Label>
+        <Button variant="primary" onClick={handleShowEdit} className="create-event-btn">
+          New Sports Event
+        </Button>
+      </div>
+      <EventReservationFormModal
+        show={showEditModal}
+        handleClose={handleCloseEdit}
+        onSave={handleSave}
+        initialData={selectedEvent}
+      />
+    </>
   );
-}
+};
 
 export default EventAdd;

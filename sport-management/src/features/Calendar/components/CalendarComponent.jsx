@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { ReactNotifications } from 'react-notifications-component';
-import { Container, Row, Col, Button, ButtonGroup, Tooltip, OverlayTrigger } from 'react-bootstrap';
+import { Container, Button, ButtonGroup } from 'react-bootstrap';
 import { Calendar, momentLocalizer, Views } from 'react-big-calendar';
-import moment from 'moment';
 import { EventSearch, EventAdd } from '../../EventTools/components/';
 import { EventDetailModal, EventReservationFormModal } from '../../EventModals/components/';
-import EventItem from './EventItem';
-import CustomDateCell from './CustomDateCell';
-import eventsService from '../../../services/eventsService';
-import notificationService from '../../../services/notificationService';
+import { EventItem, CustomDateCell } from './';
+import { eventsService, notificationService } from '../../../services/';
+import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import '../styles/CalendarComponent.css';
 import 'react-notifications-component/dist/theme.css';
@@ -29,19 +27,14 @@ const CalendarComponent = () => {
     fetchEvents();
   }, []);
 
-  const fetchEvents = async () => {
+  const fetchEvents = () => {
     try {
-      const storedEvents = await eventsService.getEvents();
+      const storedEvents = eventsService.getEvents();
       setEvents(storedEvents);
       setSearchResults([]);
     } catch (error) {
       console.error('Error fetching events:', error);
     }
-  };
-
-  const handleShowEdit = () => {
-    setSelectedEvent(null);
-    setShowEditModal(true);
   };
 
   const handleCloseDetail = () => {
@@ -54,31 +47,27 @@ const CalendarComponent = () => {
     setSelectedEvent(null);
   };
 
-  const handleSave = (event) => {
-    if (selectedEvent) {
-      // Editing an existing event
-      const updatedEvents = events.map(e => (e.id === event.id ? event : e));
-      setEvents(updatedEvents);
+  const handleEditEvent = (event) => {
+    try {
+      eventsService.editEvent(event);
+      fetchEvents(); // Actualiza la lista de eventos
       notificationService.success("Event updated successfully!");
-    } else {
-      // Adding a new event
-      setEvents([...events, event]);
-      notificationService.success("Event added successfully!");
+    } catch (error) {
+      console.error('Error updating event:', error);
+      notificationService.error("Failed to update event.");
     }
   };
 
   const handleDeleteEvent = (eventId) => {
-    eventsService.deleteEvent({ id: eventId });
-    const updatedEvents = events.filter(e => e.id !== eventId);
-    setEvents(updatedEvents);
-    notificationService.error("Event deleted successfully!");
-  };
-
-  const handleDeleteSelectedEvents = () => {
-    selectedEvents.forEach(eventId => {
-      handleDeleteEvent(eventId);
-    });
-    setSelectedEvents([]);
+    try {
+      eventsService.deleteEvent(eventId);
+      fetchEvents(); // Actualiza la lista de eventos
+      notificationService.success("Event deleted successfully!");
+      setShowDetailModal(false);
+    } catch (error) {
+      console.error('Error deleting event:', error);
+      notificationService.error("Failed to delete event.");
+    }
   };
 
   const handleSelectEvent = (eventId) => {
@@ -86,14 +75,6 @@ const CalendarComponent = () => {
       setSelectedEvents(selectedEvents.filter(id => id !== eventId));
     } else {
       setSelectedEvents([...selectedEvents, eventId]);
-    }
-  };
-
-  const handleSelectAll = (e) => {
-    if (e.target.checked) {
-      setSelectedEvents(events.map(event => event.id));
-    } else {
-      setSelectedEvents([]);
     }
   };
 
@@ -122,53 +103,45 @@ const CalendarComponent = () => {
   return (
     <Container fluid className="mt-4 calendar-container">
       <ReactNotifications />
-      <Row className="mb-3 align-items-center">
-        <Col xs="auto">
-          <EventAdd handleShowEdit={handleShowEdit} />
-        </Col>
-        <Col>
-          <EventSearch setSearchResults={setSearchResults} refreshList={fetchEvents} />
-        </Col>
-      </Row>
+      <div className="event-search-container">
+        <EventAdd fetchEvents={fetchEvents} />
+        <EventSearch setSearchResults={setSearchResults} refreshList={fetchEvents} />
+      </div>
       <div className='calendar-box'>
-        <Row>
-          <Col>
-            <Calendar
-              localizer={localizer}
-              events={searchResults.length ? searchResults : events}
-              startAccessor="start"
-              endAccessor="end"
-              titleAccessor="name"
-              selectable
-              style={{ height: 600 }}
-              view={view}
-              onView={(view) => setView(view)}
-              components={{
-                event: (props) => (
-                  <EventItem
-                    event={props.event}
-                    onView={handleViewEvent}
-                    onEdit={(event) => {
-                      setSelectedEvent(event);
-                      setShowEditModal(true);
-                    }}
-                    onDelete={handleDeleteEvent}
-                    onSelect={handleSelectEvent}
-                    view={view}
-                  />
-                ),
-                toolbar: renderToolbar,
-                dateCellWrapper: CustomDateCell, // Aquí se utiliza el nuevo componente
-              }}
-              className="calendar"
-            />
-          </Col>
-        </Row>
+        <Calendar
+          localizer={localizer}
+          events={searchResults.length ? searchResults : events}
+          startAccessor="start"
+          endAccessor="end"
+          titleAccessor="name"
+          selectable
+          style={{ height: 600 }}
+          view={view}
+          onView={(view) => setView(view)}
+          components={{
+            event: (props) => (
+              <EventItem
+                event={props.event}
+                onView={handleViewEvent}
+                onEdit={(event) => {
+                  setSelectedEvent(event);
+                  setShowEditModal(true);
+                }}
+                onDelete={handleDeleteEvent}
+                onSelect={handleSelectEvent}
+                view={view}
+              />
+            ),
+            toolbar: renderToolbar,
+            dateCellWrapper: CustomDateCell,
+          }}
+          className="calendar"
+        />
       </div>
       <EventReservationFormModal
         show={showEditModal}
         handleClose={handleCloseEdit}
-        onSave={handleSave}
+        onSave={handleEditEvent}
         initialData={selectedEvent}
       />
       <EventDetailModal
