@@ -92,13 +92,34 @@ const CalendarComponent = () => {
       </ButtonGroup>
       <span className="rbc-toolbar-label">{toolbar.label}</span>
       <ButtonGroup>
-        <Button className="btn" onClick={() => toolbar.onView(Views.MONTH)}>Month</Button>
-        <Button className="btn" onClick={() => toolbar.onView(Views.WEEK)}>Week</Button>
-        <Button className="btn" onClick={() => toolbar.onView(Views.DAY)}>Day</Button>
-        <Button className="btn" onClick={() => toolbar.onView(Views.AGENDA)}>Agenda</Button>
+        <Button
+          className={`btn ${toolbar.view === Views.MONTH ? 'active-view' : ''}`}
+          onClick={() => toolbar.onView(Views.MONTH)}
+        >
+          Month
+        </Button>
+        <Button
+          className={`btn ${toolbar.view === Views.WEEK ? 'active-view' : ''}`}
+          onClick={() => toolbar.onView(Views.WEEK)}
+        >
+          Week
+        </Button>
+        <Button
+          className={`btn ${toolbar.view === Views.DAY ? 'active-view' : ''}`}
+          onClick={() => toolbar.onView(Views.DAY)}
+        >
+          Day
+        </Button>
+        <Button
+          className={`btn ${toolbar.view === Views.AGENDA ? 'active-view' : ''}`}
+          onClick={() => toolbar.onView(Views.AGENDA)}
+        >
+          Agenda
+        </Button>
       </ButtonGroup>
     </div>
   );
+
 
   return (
     <Container fluid className="mt-4 calendar-container">

@@ -1,9 +1,34 @@
 .create-event-btn {
   padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.create-event-btn .btn-text {
+  display: inline;
+}
+
+.create-event-btn .btn-icon {
+  display: none;
 }
 
 .event-add {
   display: flex;
   flex-direction: column;
-    margin-bottom: 2rem;
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 768px) {
+  .create-event-btn .btn-text {
+    display: none;
+  }
+
+  .create-event-btn .btn-icon {
+    display: inline;
+  }
+  
+  .event-add {
+    margin-bottom: 0;
+  }
 }

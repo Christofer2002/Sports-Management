@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import EventReservationFormModal from '../../EventModals/components/EventReservationFormModal';
 import { notificationService, eventsService } from '../../../services';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import '../styles/EventAdd.css';
 
 const EventAdd = ({ fetchEvents }) => {
@@ -37,7 +39,8 @@ const EventAdd = ({ fetchEvents }) => {
       <div className='event-add'>
         <Form.Label>Create Event</Form.Label>
         <Button variant="primary" onClick={handleShowEdit} className="create-event-btn">
-          New Sports Event
+          <span className="btn-text">New Sports Event</span>
+          <FontAwesomeIcon icon={faPlus} className="btn-icon" />
         </Button>
       </div>
       <EventReservationFormModal

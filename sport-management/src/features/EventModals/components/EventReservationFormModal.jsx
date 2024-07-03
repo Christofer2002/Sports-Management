@@ -80,13 +80,17 @@ const EventReservationFormModal = ({ show, handleClose, onSave, initialData }) =
     }
 
     try {
-      const eventStartDate = new Date(formData.date);
-      const eventEndDate = new Date(formData.date);
+      const [year, month, day] = formData.date.split('-');
+      const eventDate = new Date(year, month - 1, day, 12, 0, 0); // Set to noon to avoid timezone issues
+
+      console.log('Event date:', eventDate);
+
+      const eventEndDate = new Date(eventDate);
       eventEndDate.setHours(eventEndDate.getHours() + 2); // Assuming events last for 2 hours
 
       const newEvent = {
         ...formData,
-        start: eventStartDate,
+        start: eventDate,
         end: eventEndDate
       };
       

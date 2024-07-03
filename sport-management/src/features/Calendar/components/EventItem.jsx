@@ -37,15 +37,19 @@ const EventItem = ({ event, onView, onEdit, onDelete, view }) => {
     </div>
   );
 
-  return view !== 'agenda' ? (
+  const renderEventWithTooltip = () => (
     <OverlayTrigger
       placement="top"
-      overlay={<Tooltip>Click to view details</Tooltip>}
+      overlay={<Tooltip>{event.name}</Tooltip>}
     >
       {renderEventContent()}
     </OverlayTrigger>
-  ) : (
-    renderEventContent()
+  );
+
+  return (
+    <div className={`event-item-wrapper ${view !== 'agenda' && 'show-tooltip'}`}>
+      {view !== 'agenda' ? renderEventWithTooltip() : renderEventContent()}
+    </div>
   );
 };
 
