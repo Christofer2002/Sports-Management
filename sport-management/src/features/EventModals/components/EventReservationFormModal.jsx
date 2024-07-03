@@ -5,6 +5,22 @@ import eventsService from '../../../services/eventsService';
 import eventTypes from '../../../data/eventTypes';
 import '../styles/EventReservationFormModal.css';
 
+/**
+ * EventReservationFormModal
+ * 
+ * This component displays a modal form for creating or editing a sports event. The form 
+ * includes fields for event details such as name, type, location, capacity, description,
+ * date, and photos. Upon submission, the form data is processed and passed to the onSave 
+ * handler.
+ * 
+ * @param {Object} props - The props for the component.
+ * @param {boolean} props.show - Whether the modal is visible.
+ * @param {Function} props.handleClose - Function to handle closing the modal.
+ * @param {Function} props.onSave - Function to handle saving the event data.
+ * @param {Object} props.initialData - Initial data for the event to be edited (if any).
+ * 
+ * @returns {JSX.Element} The rendered event reservation form modal component.
+ */
 const EventReservationFormModal = ({ show, handleClose, onSave, initialData }) => {
   const [formData, setFormData] = useState({
     id: '',

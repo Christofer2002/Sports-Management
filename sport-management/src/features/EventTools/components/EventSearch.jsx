@@ -7,6 +7,19 @@ import RefreshButton from '../../../components/RefreshButton';
 import { eventsService, notificationService } from '../../../services/';
 import '../styles/EventSearch.css';
 
+/**
+ * EventSearch Component
+ * 
+ * This component provides a search form for filtering events based on various criteria.
+ * Users can select a search criterion and input a corresponding search value.
+ * The component handles the search submission and displays the results.
+ * 
+ * @param {Object} props - The props for the component.
+ * @param {Function} props.setSearchResults - Function to set the search results.
+ * @param {Function} props.refreshList - Function to refresh the list of events.
+ * 
+ * @returns {JSX.Element} The rendered EventSearch component.
+ */
 const searchOptions = [
   { value: 'name', label: 'Name' },
   { value: 'type', label: 'Type' },
@@ -20,21 +33,39 @@ const EventSearch = ({ setSearchResults, refreshList }) => {
   const [searchCriteria, setSearchCriteria] = useState(searchOptions[0]);
   const [searchValue, setSearchValue] = useState('');
 
+  /**
+   * Handles changes in the search criteria.
+   * 
+   * @param {Object} selectedOption - The selected search criterion.
+   */
   const handleSearchCriteriaChange = (selectedOption) => {
     setSearchCriteria(selectedOption);
     setSearchValue(''); // Reset search value when criteria changes
   };
 
+  /**
+   * Handles changes in the search value input.
+   * 
+   * @param {Object} e - The change event.
+   */
   const handleSearchValueChange = (e) => {
     setSearchValue(e.target.value);
   };
 
+  /**
+   * Clears the search input and results.
+   */
   const handleClearSearch = () => {
     setSearchValue('');
     setSearchResults([]);
     refreshList();
   };
 
+  /**
+   * Handles the form submission for searching events.
+   * 
+   * @param {Object} e - The submit event.
+   */
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     try {

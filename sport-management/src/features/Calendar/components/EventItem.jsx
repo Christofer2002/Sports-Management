@@ -5,6 +5,21 @@ import { faCog, faInfoCircle, faEdit, faTrash } from '@fortawesome/free-solid-sv
 import '../styles/EventItem.css';
 import moment from 'moment';
 
+/**
+ * EventItem
+ * 
+ * This component renders an individual event item in the calendar. It displays
+ * event details and provides options to view, edit, or delete the event.
+ * 
+ * @param {Object} props - The props for the component.
+ * @param {Object} props.event - The event object containing event details.
+ * @param {Function} props.onView - Function to handle viewing the event.
+ * @param {Function} props.onEdit - Function to handle editing the event.
+ * @param {Function} props.onDelete - Function to handle deleting the event.
+ * @param {String} props.view - The current calendar view.
+ * 
+ * @returns {JSX.Element} The rendered event item component.
+ */
 const EventItem = ({ event, onView, onEdit, onDelete, view }) => {
   const isPastEvent = moment(event.end).isBefore(moment());
 

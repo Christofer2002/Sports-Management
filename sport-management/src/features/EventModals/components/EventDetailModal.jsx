@@ -2,6 +2,22 @@ import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import moment from 'moment';
 
+/**
+ * EventDetailModal
+ * 
+ * This component displays the details of an event in a modal. It provides options to edit
+ * or delete the event if it is not a past event.
+ * 
+ * @param {Object} props - The props for the component.
+ * @param {boolean} props.show - Whether the modal is visible.
+ * @param {Function} props.handleClose - Function to handle closing the modal.
+ * @param {Object} props.event - The event object containing event details.
+ * @param {Function} props.handleEdit - Function to handle editing the event.
+ * @param {Function} props.handleDelete - Function to handle deleting the event.
+ * @param {String} props.view - The current calendar view.
+ * 
+ * @returns {JSX.Element | null} The rendered event detail modal component.
+ */
 const EventDetailModal = ({ show, handleClose, event, handleEdit, handleDelete, view }) => {
   if (!event) return null;
 

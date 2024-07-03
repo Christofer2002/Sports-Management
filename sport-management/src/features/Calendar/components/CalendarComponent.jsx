@@ -14,6 +14,13 @@ import 'animate.css';
 
 const localizer = momentLocalizer(moment);
 
+/**
+ * CalendarComponent
+ * 
+ * This component renders a calendar with event management functionalities. 
+ * Users can add, edit, delete, and search for events. The calendar view can 
+ * be toggled between month, week, day, and agenda views.
+ */
 const CalendarComponent = () => {
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -27,6 +34,9 @@ const CalendarComponent = () => {
     fetchEvents();
   }, []);
 
+  /**
+   * Fetches events from the event service and updates the state.
+   */
   const fetchEvents = () => {
     try {
       const storedEvents = eventsService.getEvents();
@@ -37,20 +47,30 @@ const CalendarComponent = () => {
     }
   };
 
+  /**
+   * Closes the detail modal.
+   */
   const handleCloseDetail = () => {
     setShowDetailModal(false);
     setSelectedEvent(null);
   };
 
+  /**
+   * Closes the edit modal.
+   */
   const handleCloseEdit = () => {
     setShowEditModal(false);
     setSelectedEvent(null);
   };
 
+  /**
+   * Edits an existing event.
+   * @param {Object} event - The event to edit.
+   */
   const handleEditEvent = (event) => {
     try {
       eventsService.editEvent(event);
-      fetchEvents(); // Actualiza la lista de eventos
+      fetchEvents();
       notificationService.success("Event updated successfully!");
     } catch (error) {
       console.error('Error updating event:', error);
@@ -58,10 +78,14 @@ const CalendarComponent = () => {
     }
   };
 
+  /**
+   * Deletes an event by ID.
+   * @param {string} eventId - The ID of the event to delete.
+   */
   const handleDeleteEvent = (eventId) => {
     try {
       eventsService.deleteEvent(eventId);
-      fetchEvents(); // Actualiza la lista de eventos
+      fetchEvents();
       notificationService.success("Event deleted successfully!");
       setShowDetailModal(false);
     } catch (error) {
@@ -70,6 +94,10 @@ const CalendarComponent = () => {
     }
   };
 
+  /**
+   * Toggles event selection.
+   * @param {string} eventId - The ID of the event to select/deselect.
+   */
   const handleSelectEvent = (eventId) => {
     if (selectedEvents.includes(eventId)) {
       setSelectedEvents(selectedEvents.filter(id => id !== eventId));
@@ -78,11 +106,19 @@ const CalendarComponent = () => {
     }
   };
 
+  /**
+   * Displays the details of an event.
+   * @param {Object} event - The event to view.
+   */
   const handleViewEvent = (event) => {
     setSelectedEvent(event);
     setShowDetailModal(true);
   };
 
+  /**
+   * Renders the toolbar with navigation and view buttons.
+   * @param {Object} toolbar - The toolbar object from react-big-calendar.
+   */
   const renderToolbar = (toolbar) => (
     <div className="toolbar">
       <ButtonGroup>
@@ -119,7 +155,6 @@ const CalendarComponent = () => {
       </ButtonGroup>
     </div>
   );
-
 
   return (
     <Container fluid className="mt-4 calendar-container">
